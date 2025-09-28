@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/gas_database
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=123456
+      - JWT_SECRET=iCpjX/XQB+qqNTIg1SCCpgs1JhpvVALxwGUczc9cvqE=
+      - JWT_EXPIRATION=86400000
+    depends_on:
+      - db
+    volumes:
+      - ./uploads:/app/uploads
+    command: sh -c "while ! nc -z db 5432; do sleep 1; done && java -jar /app/app.jar"
+
+  # Сервис для фронтенда (с Nginx)
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+
+  # Сервис для базы данных PostgreSQL
+  db:
+    image: postgres:14-alpine
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: QAs121212
+      POSTGRES_DB: gas_database
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+volumes:
+  db_data:

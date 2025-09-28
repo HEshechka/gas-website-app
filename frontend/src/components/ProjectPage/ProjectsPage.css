@@ -1,0 +1,16 @@
+.projects-page {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    padding: 60px 0;
+    background-color: var(--main-dark);
+}
+
+.projects-page .projects__heading { /* Это если вы хотите переопределить стили из глобального CSS */
+    text-align: center;
+    margin-bottom: 40px;
+    font-size: 2.5em;
+    color: #ffffff;
+}

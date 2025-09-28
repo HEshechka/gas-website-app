@@ -1,0 +1,144 @@
+/* src/components/ProjectDetailsPage.css */
+
+/*
+   Base styles for the project details page.
+   The .container class from index.css will handle the main content width.
+*/
+.project-details-page {
+    background-color: var(--main-dark);
+    padding: 100px 0;
+    color: var(--main-light);
+    min-height: 100vh;
+}
+
+/* Wrapper to align content within the container */
+.project-details__wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+/* Heading for the project title */
+.project-details__heading {
+    font-size: 3em; /* Larger, more prominent title */
+    font-weight: 700;
+    color: var(--main-light);
+    margin-bottom: 25px;
+    line-height: 1.2;
+}
+
+/* Image for the project */
+.project-details__image {
+    width: 100%;
+    max-width: 40vw;
+    height: auto;
+    object-fit: cover;
+    border-radius: 8px 0 8px 0;
+    margin-bottom: 40px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+}
+
+/* Main description of the project */
+.project-details__description {
+    font-size: 1.25em; /* 20px */
+    font-weight: 400;
+    line-height: 1.6;
+    color: var(--gray-text);
+    margin-bottom: 40px;
+    max-width: 900px;
+}
+
+/* Grid layout for project details like area, duration, and location */
+.project-details__info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    width: 100%;
+    max-width: 900px;
+    padding: 20px 0;
+    border-top: 1px solid var(--light-gray-border);
+    border-bottom: 1px solid var(--light-gray-border);
+}
+
+/* Individual detail item */
+.info-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    text-align: center;
+}
+
+.info-item strong {
+    font-size: 1.25em; /* 20px */
+    font-weight: 700;
+    color: var(--accent);
+}
+
+.info-item span {
+    font-size: 1em; /* 16px */
+    font-weight: 500;
+    color: var(--main-light);
+}
+
+/* Error and loading messages */
+.project-details-loading,
+.project-details-error {
+    text-align: center;
+    font-size: 1.5em;
+    padding: 50px 0;
+    color: var(--gray-text);
+}
+
+/* --- ADAPTIVE STYLES --- */
+
+@media (max-width: 1100px) {
+    .project-details__heading {
+        font-size: 2.5em;
+    }
+
+    .project-details__description {
+        font-size: 1.1em;
+    }
+}
+
+@media (max-width: 768px) {
+    .project-details-page {
+        padding: 60px 0;
+    }
+
+    .project-details__heading {
+        font-size: 2em;
+    }
+
+    .project-details__image {
+        max-width: 90vw;
+        margin-bottom: 25px; /* Сохраняем ваш отступ */
+    }
+
+    .project-details__description {
+        font-size: 1em;
+        margin-bottom: 30px;
+    }
+
+    .project-details__info-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        border: none; /* Remove borders on smaller screens for cleaner look */
+    }
+
+    .info-item strong {
+        font-size: 1.1em;
+    }
+
+    .info-item span {
+        font-size: 0.9em;
+    }
+}
+
+@media (max-width: 576px) {
+    .project-details__heading {
+        font-size: 1.5em;
+    }
+}
