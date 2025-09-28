@@ -1,42 +1,51 @@
 version: '3.8'
 
 services:
+  # Сервис для Backend
   backend:
     build:
-      context: ./backend
-    ports:
-      - "8080:8080"
+      context: ./backend # Путь к директории с backend
+    container_name: myapp-backend
+    restart: unless-stopped
+    env_file:
+      - .env # Файл с переменными окружения
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/gas_database
-      - SPRING_DATASOURCE_USERNAME=postgres
-      - SPRING_DATASOURCE_PASSWORD=123456
-      - JWT_SECRET=iCpjX/XQB+qqNTIg1SCCpgs1JhpvVALxwGUczc9cvqE=
-      - JWT_EXPIRATION=86400000
+      - DATABASE_URL=postgresql://${DB_USER}:${DB_PASSWORD}@db:5432/${DB_NAME}
+    networks:
+      - app-network
     depends_on:
       - db
-    volumes:
-      - ./uploads:/app/uploads
-    command: sh -c "while ! nc -z db 5432; do sleep 1; done && java -jar /app/app.jar"
 
-  # Сервис для фронтенда (с Nginx)
+  # Сервис для Frontend (сборка)
   frontend:
     build:
-      context: ./frontend
+      context: ./frontend # Путь к директории с frontend
+    container_name: myapp-frontend
+    restart: unless-stopped
     ports:
-      - "3000:80"
-    depends_on:
-      - backend
+      - "8080:80" # Пробрасываем порт для доступа к собранному frontend
+    networks:
+      - app-network
 
-  # Сервис для базы данных PostgreSQL
+  # Сервис для PostgreSQL
   db:
     image: postgres:14-alpine
-    restart: always
+    container_name: myapp-db
+    restart: unless-stopped
+    env_file:
+      - .env # Файл с переменными окружения
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: QAs121212
-      POSTGRES_DB: gas_database
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
     volumes:
-      - db_data:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data # Сохранение данных
+    networks:
+      - app-network
 
 volumes:
-  db_data:
+  postgres_data:
+
+networks:
+  app-network:
+    driver: bridge
