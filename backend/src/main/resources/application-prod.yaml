@@ -1,0 +1,25 @@
+spring.application.name: backend
+
+jwt:
+  secret: iCpjX/XQB+qqNTIg1SCCpgs1JhpvVALxwGUczc9cvqE=
+  expiration: 86400000
+
+file:
+  upload-dir: ./uploads/
+
+spring:
+  datasource:
+    url: jdbc:postgresql://db:5432/gas_database
+    username: postgres
+    password: DBH5syv4MUKu!
+    driver-class-name: org.postgresql.Driver
+  security:
+    cors:
+  web:
+    resources:
+      static-locations: file:${file.upload-dir},classpath:/static/
+
+data:
+  initialize:
+    username: rusmsm
+    password: 40702810100010002636000000

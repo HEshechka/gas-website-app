@@ -1,0 +1,6 @@
+target/
+.mvn/
+.gradle/
+.git/
+.gitignore
+.gitattributes
