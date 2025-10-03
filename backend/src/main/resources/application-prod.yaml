@@ -1,5 +1,10 @@
 spring.application.name: backend
 
+server:
+  port: 8080
+  address: 0.0.0.0
+
+
 jwt:
   secret: iCpjX/XQB+qqNTIg1SCCpgs1JhpvVALxwGUczc9cvqE=
   expiration: 86400000
@@ -8,13 +13,14 @@ file:
   upload-dir: ./uploads/
 
 spring:
+  spring:
   datasource:
-    url: jdbc:postgresql://db:5432/gas_database
+    url: jdbc:postgresql://myapp-db:5432/gas_database
     username: postgres
-    password: DBH5syv4MUKu!
+    password: QAs121212
     driver-class-name: org.postgresql.Driver
   security:
-    cors:
+    cors: http://81.19.136.145
   web:
     resources:
       static-locations: file:${file.upload-dir},classpath:/static/

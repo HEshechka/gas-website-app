@@ -1,47 +1,56 @@
 version: '3.8'
 
 services:
-  # Сервис для Backend
   backend:
     build:
-      context: ./backend # Путь к директории с backend
+      context: ./backend
     container_name: myapp-backend
     restart: unless-stopped
     env_file:
-      - .env # Файл с переменными окружения
+      - .env
     environment:
-      - DATABASE_URL=postgresql://${DB_USER}:${DB_PASSWORD}@db:5432/${DB_NAME}
+      - DATABASE_URL=jdbc:postgresql://myapp-db:5432/${DB_NAME}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+    ports:
+      - "8080:8080"
     networks:
       - app-network
     depends_on:
-      - db
+      db:
+        condition: service_healthy
 
-  # Сервис для Frontend (сборка)
   frontend:
     build:
-      context: ./frontend # Путь к директории с frontend
+      context: ./frontend
     container_name: myapp-frontend
     restart: unless-stopped
     ports:
-      - "8080:80" # Пробрасываем порт для доступа к собранному frontend
+      - "3000:3000"
     networks:
       - app-network
+    depends_on:
+      - backend
 
-  # Сервис для PostgreSQL
   db:
     image: postgres:14-alpine
     container_name: myapp-db
     restart: unless-stopped
     env_file:
-      - .env # Файл с переменными окружения
+      - .env
     environment:
       - POSTGRES_DB=${DB_NAME}
       - POSTGRES_USER=${DB_USER}
       - POSTGRES_PASSWORD=${DB_PASSWORD}
     volumes:
-      - postgres_data:/var/lib/postgresql/data # Сохранение данных
+      - postgres_data:/var/lib/postgresql/data
     networks:
       - app-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
 volumes:
   postgres_data:

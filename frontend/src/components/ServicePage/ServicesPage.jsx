@@ -2,7 +2,7 @@
 import React, {useEffect, useState} from 'react'; // Импортируем useState и useEffect
 import './ServicesPage.css';
 
-const API_SERVICES_URL = 'http://localhost:8080/api/services'; // Пример URL, измените по необходимости
+const API_SERVICES_URL = '/api/services'; // Пример URL, измените по необходимости
 
 const ServicesPage = () => {
     const [services, setServices] = useState([]); // Состояние для хранения списка услуг

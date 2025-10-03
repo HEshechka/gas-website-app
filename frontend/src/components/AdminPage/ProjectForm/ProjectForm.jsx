@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './ProjectForm.css'; // Создайте этот CSS файл
 
-const API_BASE_URL = 'http://localhost:8080/api/projects';
+const API_BASE_URL = 'http://myapp-backend:8080/api/projects';
 
 const ProjectForm = ({ project, onFormSubmitSuccess, onCancel }) => {
     const [formData, setFormData] = useState({

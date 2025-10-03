@@ -1,5 +1,5 @@
 // services/AuthService/AuthService.jsx
-const API_BASE_URL = 'http://localhost:8080/api';
+const API_BASE_URL = 'http://myapp-backend:8080/api';
 
 class AuthService {
     async login(credentials) {

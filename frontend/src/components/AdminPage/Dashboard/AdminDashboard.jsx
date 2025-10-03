@@ -4,8 +4,8 @@ import ServiceForm from '../ServiceForm.jsx'; // Компонент формы �
 import './AdminDashboard.css'; // Ваш CSS файл для стилей админки
 
 // Базовые URL вашего Spring Boot API
-const API_PROJECTS_URL = 'http://localhost:8080/api/projects';
-const API_SERVICES_URL = 'http://localhost:8080/api/services'; // URL для услуг
+const API_PROJECTS_URL = 'http://myapp-backend:8080/api/projects';
+const API_SERVICES_URL = 'http://myapp-backend:8080/api/services'; // URL для услуг
 
 const AdminDashboard = () => {
     // --- Состояния для управления проектами ---
