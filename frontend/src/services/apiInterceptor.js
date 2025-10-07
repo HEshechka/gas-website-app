@@ -22,14 +22,3 @@ export const apiInterceptor = {
         });
     }
 };
-
-// Пример использования в сервисах
-export const adminService = {
-    async getUsers() {
-        const response = await apiInterceptor.request(`${API_BASE_URL}/admin/users`);
-        if (!response.ok) {
-            throw new Error('Failed to fetch users');
-        }
-        return response.json();
-    }
-};

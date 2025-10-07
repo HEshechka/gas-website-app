@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './ProjectForm.css'; // Создайте этот CSS файл
 
-const API_BASE_URL = 'http://myapp-backend:8080/api/projects';
+const API_BASE_URL = '/api/projects';
 
 const ProjectForm = ({ project, onFormSubmitSuccess, onCancel }) => {
     const [formData, setFormData] = useState({
@@ -214,7 +214,7 @@ const ProjectForm = ({ project, onFormSubmitSuccess, onCancel }) => {
                     accept="image/*"
                 />
                 {formData.imageUrl && !file && (
-                    <p>Текущее изображение: <img src={`http://localhost:8080${formData.imageUrl}`} alt="Текущее" style={{ width: '100px' }} /></p>
+                    <p>Текущее изображение: <img src={`/images${formData.imageUrl}`} alt="Текущее" style={{ width: '100px' }} /></p>
                 )}
                 {file && <p>Выбран файл: {file.name}</p>}
                 {uploading && <p>Загрузка файла...</p>}

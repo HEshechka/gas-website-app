@@ -1,10 +1,7 @@
-// services/AuthService/AuthService.jsx
-const API_BASE_URL = 'http://myapp-backend:8080/api';
-
 class AuthService {
     async login(credentials) {
         try {
-            const response = await fetch(`${API_BASE_URL}/auth/login`, {
+            const response = await fetch(`/api/auth/login`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(credentials)
@@ -31,15 +28,13 @@ class AuthService {
     async getProfile() {
         try {
             const token = this.getToken();
-            console.log(token);
-            const response = await fetch(`${API_BASE_URL}/auth/me`, {
+            const response = await fetch(`/api/auth/me`, {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${token}`,
                 },
                 credentials: 'include'
             });
-            console.log(response);
 
             if (!response.ok) {
                 // Если ответ не 200 OK, значит что-то пошло не так

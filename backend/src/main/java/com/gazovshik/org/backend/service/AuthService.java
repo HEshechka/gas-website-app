@@ -23,8 +23,10 @@ public class AuthService {
 
     public AuthResponse authenticate(AuthRequest request) {
         try {
+            log.info("Authenticating {}", request.getUsername());
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
+            log.info("Get meta for user {}", request.getUsername());
 
             final UserDetails userDetails = userService.loadUserByUsername(request.getUsername());
             final String token = jwtUtil.generateToken(userDetails);

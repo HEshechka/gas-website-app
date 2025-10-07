@@ -20,7 +20,7 @@ spring:
     password: QAs121212
     driver-class-name: org.postgresql.Driver
   security:
-    cors: http://81.19.136.145
+    cors: http://81.19.136.145,https://1gazovshik.ru
   web:
     resources:
       static-locations: file:${file.upload-dir},classpath:/static/

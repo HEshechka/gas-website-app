@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './ProjectForm/ProjectForm.css'; // Можно использовать те же стили, что и для ProjectForm
 
-const API_SERVICES_URL = 'http://myapp-backend:8080/api/services'; // URL для API услуг
+const API_SERVICES_URL = '/api/services'; // URL для API услуг
 
 const ServiceForm = ({ service, onFormSubmitSuccess, onCancel }) => {
     const [formData, setFormData] = useState({

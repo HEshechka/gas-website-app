@@ -61,7 +61,7 @@ const ProjectsPage = () => {
                         projects.map((project) => (
                             <div className="project-card" key={project.id}>
                                 <img
-                                    src={project.imageUrl ? `http://localhost:8080${project.imageUrl}` : '../img/hero.png'}
+                                    src={project.imageUrl ? `https://1gazovshik.ru${project.imageUrl}` : '../img/hero.png'}
                                     alt={project.title || 'Проект'}
                                     className="project-card__image"
                                 />
