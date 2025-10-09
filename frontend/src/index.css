@@ -692,7 +692,6 @@ body {
     }
 
     /* Header adjustments */
-    .company__section,
     .hero__section {
         height: 600px; /* Reduce hero height for mobile */
         background-size: 120%;
@@ -856,6 +855,11 @@ body {
         font-size: 16px;
     }
 
+    .company__section {
+        background-size: 120%;
+        background-position-x: left;
+    }
+
     .company__heading {
         font-size: 32px;
         margin-bottom: 40px;
@@ -935,7 +939,6 @@ body {
         padding: 10px 0; /* Remove horizontal padding from wrapper, container handles it */
     }
 
-    .company__section,
     .hero__section {
         height: 600px; /* Reduce hero height for mobile */
         background-size: 120%;
@@ -957,6 +960,11 @@ body {
     .guarantee-item {
         justify-content: center; /* Center text within item */
         font-size: 15px;
+    }
+
+    .company__section {
+        background-size: 120%;
+        background-position-x: left;
     }
 
     .projects__heading, .services__heading {
@@ -994,7 +1002,6 @@ body {
         height: 2px;
     }
 
-    .company__section,
     .hero__section {
         height: 500px; /* Even smaller hero height */
     }
