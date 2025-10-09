@@ -13,7 +13,7 @@ const ProjectDetailsPage = () => {
         const fetchProjectDetails = async () => {
             try {
                 // Отправляем запрос на сервер, используя id из URL
-                const response = await fetch(`http://myapp-backend:8080/api/projects/${id}`);
+                const response = await fetch(`/api/projects/${id}`);
 
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
@@ -44,7 +44,7 @@ const ProjectDetailsPage = () => {
             <div className="project-details__wrapper container">
                 <h1 className="project-details__heading">{project.title}</h1>
                 <img
-                    src={project.imageUrl ? `http://myapp-backend:8080${project.imageUrl}` : '../img/hero.png'}
+                    src={project.imageUrl ? `${project.imageUrl}` : '../img/hero.png'}
                     alt={project.title}
                     className="project-details__image"
                 />
