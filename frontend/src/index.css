@@ -179,6 +179,7 @@ body {
     background-image: url('../src/img/hero.png'); /* Correct syntax */
     background-size: cover;
     background-position: center;
+    background-position-x: left;
     background-repeat: no-repeat;
     height: 920px; /* Based on Figma */
     display: flex;
@@ -308,6 +309,7 @@ body {
     background-image: url('../src/img/hero.png');
     background-size: cover;
     background-position: center;
+    background-position-x: left;
     background-repeat: no-repeat;
 }
 
@@ -690,6 +692,13 @@ body {
     }
 
     /* Header adjustments */
+    .company__section,
+    .hero__section {
+        height: 600px; /* Reduce hero height for mobile */
+        background-size: 120%;
+        background-position-x: left;
+    }
+
     .header__logo--img {
         width: 50px;
         height: 65px;
@@ -926,8 +935,11 @@ body {
         padding: 10px 0; /* Remove horizontal padding from wrapper, container handles it */
     }
 
+    .company__section,
     .hero__section {
         height: 600px; /* Reduce hero height for mobile */
+        background-size: 120%;
+        background-position-x: left;
     }
 
     .hero__title {
@@ -982,6 +994,7 @@ body {
         height: 2px;
     }
 
+    .company__section,
     .hero__section {
         height: 500px; /* Even smaller hero height */
     }
