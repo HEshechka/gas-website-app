@@ -23,37 +23,37 @@ const AdminDashboard = () => {
     const [showServiceForm, setShowServiceForm] = useState(false); // Для отображения/скрытия формы услуг
 
     // --- Эффект для загрузки проектов при монтировании компонента ---
+    const fetchProjects = async () => {
+        try {
+            const response = await fetch(API_PROJECTS_URL);
+            if (!response.ok) {
+                throw new Error('Failed to fetch projects');
+            }
+            const data = await response.json();
+            setProjects(data);
+        } catch (error) {
+            setErrorProjects(error.message);
+        } finally {
+            setLoadingProjects(false);
+        }
+    };
+
+    const fetchServices = async () => {
+        try {
+            const response = await fetch(API_SERVICES_URL);
+            if (!response.ok) {
+                throw new Error('Failed to fetch services');
+            }
+            const data = await response.json();
+            setServices(data);
+        } catch (error) {
+            setErrorServices(error.message);
+        } finally {
+            setLoadingServices(false);
+        }
+    };
+
     useEffect(() => {
-        const fetchProjects = async () => {
-            try {
-                const response = await fetch(API_PROJECTS_URL);
-                if (!response.ok) {
-                    throw new Error('Failed to fetch projects');
-                }
-                const data = await response.json();
-                setProjects(data);
-            } catch (error) {
-                setErrorProjects(error.message);
-            } finally {
-                setLoadingProjects(false);
-            }
-        };
-
-        const fetchServices = async () => {
-            try {
-                const response = await fetch(API_SERVICES_URL);
-                if (!response.ok) {
-                    throw new Error('Failed to fetch services');
-                }
-                const data = await response.json();
-                setServices(data);
-            } catch (error) {
-                setErrorServices(error.message);
-            } finally {
-                setLoadingServices(false);
-            }
-        };
-
         fetchProjects();
         fetchServices();
     }, []);
@@ -155,10 +155,11 @@ const AdminDashboard = () => {
                     <tbody>
                     {projects.map((project) => (
                         <tr key={project.id}>
-                            <td data-label="ID">{project.id}</td>
-                            <td data-label="Название">{project.title}</td>
-                            <td data-label="Местоположение">{project.location}</td>
-                            <td data-label="Длительность">{project.duration}</td>
+                            {/* Изменено: Обернуто в <span className="cell-content"> */}
+                            <td data-label="ID"><span className="cell-content">{project.id}</span></td>
+                            <td data-label="Название"><span className="cell-content">{project.title}</span></td>
+                            <td data-label="Местоположение"><span className="cell-content">{project.location}</span></td>
+                            <td data-label="Длительность"><span className="cell-content">{project.duration}</span></td>
                             <td data-label="Действия">
                                 <button className="admin-button edit-button" onClick={() => handleEditProject(project)}>
                                     Редактировать
@@ -205,10 +206,11 @@ const AdminDashboard = () => {
                     <tbody>
                     {services.map((service) => (
                         <tr key={service.id}>
-                            <td data-label="ID">{service.id}</td>
-                            <td data-label="Название">{service.title}</td>
-                            <td data-label="Описание">{service.description}</td>
-                            <td data-label="Цена">{service.price}</td>
+                            {/* Изменено: Обернуто в <span className="cell-content"> */}
+                            <td data-label="ID"><span className="cell-content">{service.id}</span></td>
+                            <td data-label="Название"><span className="cell-content">{service.title}</span></td>
+                            <td data-label="Описание"><span className="cell-content">{service.description}</span></td>
+                            <td data-label="Цена"><span className="cell-content">{service.price}</span></td>
                             <td data-label="Действия">
                                 <button className="admin-button edit-button" onClick={() => handleEditService(service)}>
                                     Редактировать

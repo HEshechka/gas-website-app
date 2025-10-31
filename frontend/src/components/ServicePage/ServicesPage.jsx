@@ -1,50 +1,40 @@
 // src/components/ServicesPage.jsx
-import React, {useEffect, useState} from 'react'; // Импортируем useState и useEffect
+import React, {useEffect, useState} from 'react';
 import './ServicesPage.css';
 
-const API_SERVICES_URL = '/api/services'; // Пример URL, измените по необходимости
+const API_SERVICES_URL = '/api/services';
 
 const ServicesPage = () => {
-    const [services, setServices] = useState([]); // Состояние для хранения списка услуг
-    const [loading, setLoading] = useState(true);   // Состояние для отслеживания загрузки данных
-    const [error, setError] = useState(null);       // Состояние для хранения ошибок
+    const [services, setServices] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
         const fetchServices = async () => {
             try {
                 const response = await fetch(API_SERVICES_URL);
-
-                if (!response.ok) { // Проверяем, успешен ли был HTTP-ответ
-                    // Если ответ не OK (например, 404 или 500), выбрасываем ошибку
+                if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
-
-                const data = await response.json(); // Парсим ответ как JSON
-                setServices(data); // Обновляем состояние с полученными услугами
+                const data = await response.json();
+                setServices(data);
             } catch (error) {
                 console.error("Ошибка при получении услуг:", error);
-                setError(error); // Сохраняем ошибку в состоянии
+                setError(error.message);
             } finally {
-                setLoading(false); // В любом случае, завершаем состояние загрузки
+                setLoading(false);
             }
         };
-
-        fetchServices(); // Вызываем функцию получения данных при монтировании компонента
-
-        // Пустой массив зависимостей означает, что этот эффект запустится один раз
-        // после первоначального рендеринга и не будет повторяться.
+        fetchServices();
     }, []);
 
-    // Условный рендеринг:
     if (loading) {
         return (
             <section className="services-page">
                 <div className="container">
-                    <h1 className="services-page__heading">Загрузка услуг...</h1>
-                    {/* Вы можете добавить спиннер или другую анимацию загрузки здесь */}
-                    <div style={{textAlign: 'center', padding: '50px'}}>
-                        {/* Пример простого спиннера или текста */}
-                        <p>Пожалуйста, подождите...</p>
+                    <h1 className="services-page__heading">Наши услуги</h1>
+                    <div style={{textAlign: 'center', padding: '50px', color: 'var(--main-light)'}}>
+                        <p>Загрузка услуг...</p>
                     </div>
                 </div>
             </section>
@@ -55,42 +45,49 @@ const ServicesPage = () => {
         return (
             <section className="services-page">
                 <div className="container">
-                    <h1 className="services-page__heading">Ошибка при загрузке услуг. Попробуйте перезагрузить
-                        страницу.</h1>
+                    <h1 className="services-page__heading">Наши услуги</h1>
+                    <div style={{textAlign: 'center', padding: '40px', color: 'var(--accent)'}}>
+                        <p>Ошибка при загрузке услуг: {error}</p>
+                        <p style={{marginTop: '20px', fontSize: '0.9em', color: 'var(--main-light)'}}>
+                            Пожалуйста, попробуйте перезагрузить страницу
+                        </p>
+                    </div>
                 </div>
             </section>
         );
     }
 
-    // Если данные загружены успешно и ошибок нет, отображаем таблицу
     return (
         <section className="services-page">
             <div className="container">
                 <h1 className="services-page__heading">Наши услуги</h1>
-
-                {services.length > 0 ? ( // Проверяем, есть ли услуги для отображения
-                    <table className="services-table">
-                        <thead>
-                        <tr>
-                            <th>Наименование услуги</th>
-                            <th>Описание</th>
-                            <th>Цена</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {services.map(service => (
-                            <tr key={service.id}>
-                                <td>{service.title}</td>
-                                <td>{service.description}</td>
-                                <td>{service.price}</td>
+                {services.length > 0 ? (
+                    <div className="services-table-container">
+                        <table className="services-table">
+                            <thead>
+                            <tr>
+                                <th>Наименование услуги</th>
+                                <th>Описание</th>
+                                <th>Цена</th>
                             </tr>
-                        ))}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                            {services.map(service => (
+                                <tr key={service.id}>
+                                    {/* ✨ УБЕДИТЕСЬ, ЧТО ЭТИ АТРИБУТЫ ДОБАВЛЕНЫ */}
+                                    <td data-label="Наименование">{service.title}</td>
+                                    <td data-label="Описание">{service.description}</td>
+                                    <td data-label="Цена">{service.price}</td>
+                                </tr>
+                            ))}
+                            </tbody>
+                        </table>
+                    </div>
                 ) : (
-                    <p>Пока нет доступных услуг.</p>
+                    <div className="services-page__no-services">
+                        <p>Пока нет доступных услуг.</p>
+                    </div>
                 )}
-
                 <div className="services-page__cta">
                     <a href="tel:+74957492925">
                         <button className="button hero__button">Связаться с нами</button>

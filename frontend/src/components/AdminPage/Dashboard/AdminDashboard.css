@@ -71,6 +71,14 @@
     vertical-align: middle;
 }
 
+/* Добавляем стили для переноса слов в обычной таблице */
+.projects-table td {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: break-all;
+    min-width: 0;
+}
+
 .projects-table th {
     background-color: var(--main-dark);
     color: var(--gray-text);
@@ -94,6 +102,7 @@
     margin-bottom: 40px;
 }
 
+/* СТИЛИ ДЛЯ МОБИЛЬНОЙ ВЕРСИИ */
 @media (max-width: 768px) {
     .admin-container {
         padding: 20px;
@@ -123,36 +132,43 @@
 
     .projects-table td {
         display: block;
-        text-align: right;
-        padding-left: 50%;
+        /* Выравниваем текст по левому краю */
+        text-align: left;
+        padding-left: 15px; /* Убираем большой отступ, т.к. текст на новой строке */
         position: relative;
         font-size: 14px;
         border: none;
         padding: 10px 15px;
     }
 
+    /* Стиль для заголовка (Название, Описание и т.д.) */
     .projects-table td::before {
         content: attr(data-label);
-        position: absolute;
-        left: 15px;
-        width: calc(50% - 30px);
+        position: static; /* Важно! Снимаем абсолютное позиционирование */
+        display: block; /* Заставляет заголовок занимать всю ширину и переносить следующий элемент */
+        width: auto; /* Не нужна фиксированная ширина */
         text-align: left;
         font-weight: bold;
         color: var(--accent);
+        margin-bottom: 5px; /* Небольшой отступ после заголовка */
+        padding-left: 0;
+        left: auto; /* Сброс */
+    }
+
+    /* Стиль для фактического содержимого ячейки */
+    .cell-content {
+        display: block; /* Заставляет содержимое начинаться с новой строки */
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        word-break: break-all;
     }
 
     .projects-table td:last-child {
         text-align: center;
-        padding-left: 15px;
+        padding-left: 15px; /* Добавляем обратно отступ */
     }
 
     .projects-table td:last-child::before {
         content: none;
-    }
-
-    .admin-button.edit-button,
-    .admin-button.delete-button {
-        width: 100%;
-        margin-bottom: 10px;
     }
 }

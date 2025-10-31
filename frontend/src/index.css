@@ -185,6 +185,7 @@ body {
     display: flex;
     align-items: center; /* Vertically center content */
     color: var(--main-light); /* Text color for hero content */
+    padding-top: 20px;
 }
 
 .hero__wrapper { /* This .container class already handles max-width and padding */
@@ -213,6 +214,7 @@ body {
     font-size: 18px;
     line-height: 1.6;
     margin-bottom: 40px;
+    text-align: justify;
 }
 
 .hero__callback {
@@ -295,6 +297,7 @@ body {
     flex-grow: 1; /* Allow items to grow */
     max-width: 250px; /* Max width for each item on larger screens */
     justify-content: center; /* Center content in item on larger screens */
+    text-align: center;
 }
 
 .guarantee-text {
@@ -336,6 +339,7 @@ body {
     color: var(--gray-text);
     line-height: 1.6;
     margin-bottom: 25px;
+    text-align: justify;
 }
 
 /* --- Services Section Styles --- */
@@ -661,7 +665,7 @@ body {
 /* For screens smaller than 1200px (e.g., large tablets / smaller desktops) */
 @media (max-width: 1200px) {
     .container {
-        padding: 0 30px; /* Reduce horizontal padding */
+        /*padding: 0 30px; !* Reduce horizontal padding *!*/
     }
 
     .header__nav--list {
@@ -672,9 +676,9 @@ body {
         font-size: 60px; /* Smaller title font */
     }
 
-    .hero__content {
-        max-width: 500px; /* Adjust content width */
-    }
+    /*.hero__content {*/
+    /*    max-width: 500px; !* Adjust content width *!*/
+    /*}*/
 
     .projects__grid {
         grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Allow smaller project cards */
@@ -809,17 +813,18 @@ body {
 
     .hero__description {
         font-size: 16px;
+        text-align: center;
     }
 
     .hero__wrapper {
         align-items: center; /* Center hero content vertically */
         justify-content: center; /* Center hero content horizontally */
         text-align: center; /* Center text within hero content */
-        padding: 0 25px;
     }
 
     .hero__content {
-        max-width: 90%; /* Take more width */
+        /*max-width: 90%; !* Take more width *!*/
+        text-align: center;
     }
 
     .hero__callback {
@@ -864,10 +869,13 @@ body {
         font-size: 32px;
         margin-bottom: 40px;
         text-align: center;
+        width: 100%;
     }
 
     .company__description {
         font-size: 18px;
+        text-align: center;
+        width: 100%;
     }
 
     /* Services section adjustments */
@@ -893,6 +901,7 @@ body {
 
     .service-card__description {
         font-size: 18px; /* Re-adjust this if the original 28px was too large */
+        text-align: center;
     }
 
     .service-card__button {
@@ -947,10 +956,12 @@ body {
 
     .hero__title {
         font-size: 40px;
+        text-align: center;
     }
 
     .hero__description {
         font-size: 15px;
+        text-align: center;
     }
 
     .guarantees__wrapper {

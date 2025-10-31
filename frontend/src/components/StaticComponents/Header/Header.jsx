@@ -42,12 +42,12 @@ const Header = () => {
                         <li className="header__nav-list--item">
                             <NavLink to="/" className={({ isActive }) => isActive ? 'header__nav-list--link active' : 'header__nav-list--link'} onClick={toggleMenu}>О компании</NavLink>
                         </li>
-                        <li className="header__nav-list--item">
-                            <NavLink to="/services" className={({ isActive }) => isActive ? 'header__nav-list--link active' : 'header__nav-list--link'} onClick={toggleMenu}>Услуги</NavLink>
-                        </li>
-                        <li className="header__nav-list--item">
-                            <NavLink to="/projects" className={({ isActive }) => isActive ? 'header__nav-list--link active' : 'header__nav-list--link'} onClick={toggleMenu}>Наши работы</NavLink>
-                        </li>
+                        {/*<li className="header__nav-list--item">*/}
+                        {/*    <NavLink to="/services" className={({ isActive }) => isActive ? 'header__nav-list--link active' : 'header__nav-list--link'} onClick={toggleMenu}>Услуги</NavLink>*/}
+                        {/*</li>*/}
+                        {/*<li className="header__nav-list--item">*/}
+                        {/*    <NavLink to="/projects" className={({ isActive }) => isActive ? 'header__nav-list--link active' : 'header__nav-list--link'} onClick={toggleMenu}>Наши работы</NavLink>*/}
+                        {/*</li>*/}
                         <li className="header__nav-list--item">
                             <a href="#contacts" className="header__nav-list--link" onClick={toggleMenu}>Контакты</a>
                         </li>

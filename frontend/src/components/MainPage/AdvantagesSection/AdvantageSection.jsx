@@ -8,10 +8,13 @@ const AdvantageSection = () => {
                     <p className="guarantee-text">15+ лет на рынке</p>
                 </div>
                 <div className="guarantee-item">
-                    <p className="guarantee-text">7 000+ довольных клиентов</p>
+                    <p className="guarantee-text">Индивидуальный подход к каждому клиенту</p>
                 </div>
                 <div className="guarantee-item">
-                    <p className="guarantee-text">12 000+ выполненных работ</p>
+                    <p className="guarantee-text">Опытные специалисты</p>
+                </div>
+                <div className="guarantee-item">
+                    <p className="guarantee-text">12 000+<br/>выполненных работ</p>
                 </div>
             </div>
         </section>

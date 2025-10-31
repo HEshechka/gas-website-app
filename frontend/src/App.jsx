@@ -29,7 +29,7 @@ function App() {
                         <AdvantageSection/>
                         <AboutCompanySection/>
                         <ServicesSection/>
-                        <ProjectsSection/>
+                        {/*<ProjectsSection/>*/}
                     </main>
                 }/>
 

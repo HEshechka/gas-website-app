@@ -18,8 +18,8 @@ const Footer = () => {
                 <nav className="footer__nav">
                     <ul className="footer__nav--list">
                         <li className="footer__nav-list--item"><a href="#" className="footer__nav-list--link">О компании</a></li>
-                        <li className="footer__nav-list--item"><a href="#" className="footer__nav-list--link">Услуги</a></li>
-                        <li className="footer__nav-list--item"><a href="#" className="footer__nav-list--link">Наши работы</a></li>
+                        {/*<li className="footer__nav-list--item"><a href="#" className="footer__nav-list--link">Услуги</a></li>*/}
+                        {/*<li className="footer__nav-list--item"><a href="#" className="footer__nav-list--link">Наши работы</a></li>*/}
                         <li className="footer__nav-list--item"><a href="#contacts" className="footer__nav-list--link">Контакты</a></li>
                     </ul>
                 </nav>
