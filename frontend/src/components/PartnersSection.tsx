@@ -1,4 +1,4 @@
-import {useEffect, useRef, useState} from "react";
+import {useEffect, useRef} from "react";
 
 const partners = [
     {name: "Даблби", logo: "/DoubleBe.jpg", link: "https://double-b.ru/"},
@@ -20,7 +20,6 @@ const partners = [
 
 const PartnersSection = () => {
     const scrollRef = useRef<HTMLDivElement>(null);
-    const [scales, setScales] = useState<number[]>(partners.map(() => 0.7));
 
     useEffect(() => {
         const handleScroll = () => {
@@ -29,149 +28,110 @@ const PartnersSection = () => {
             const container = scrollRef.current;
             const containerRect = container.getBoundingClientRect();
             const centerX = containerRect.left + containerRect.width / 2;
-
             const items = container.querySelectorAll("[data-partner-item]");
-            const newScales: number[] = [];
 
             items.forEach((item) => {
                 const itemRect = item.getBoundingClientRect();
                 const itemCenterX = itemRect.left + itemRect.width / 2;
                 const distance = Math.abs(centerX - itemCenterX);
+
                 const maxDistance = containerRect.width / 2;
-
-                // Calculate scale based on distance from center
                 const normalizedDistance = Math.min(distance / maxDistance, 1);
-                const scale = 1 - normalizedDistance * 0.35; // Scale from 1 to 0.65
-                const opacity = 1 - normalizedDistance * 0.5; // Opacity from 1 to 0.5
 
-                newScales.push(scale);
+                const scale = 1 - normalizedDistance * 0.3;
+                const opacity = 1 - normalizedDistance * 0.5;
+                const grayValue = Math.min(distance / 1.5, 100);
 
-                // Apply styles directly for smoother animation
-                (item as HTMLElement).style.transform = `scale(${scale})`;
-                (item as HTMLElement).style.opacity = `${opacity}`;
+                const glowIntensity = Math.pow(Math.max(0, 1 - distance / (containerRect.width / 3.5)), 2);
+
+                const blueGlow = `rgba(59, 130, 246, ${glowIntensity * 0.6})`;
+                const blueBorder = `rgba(59, 130, 246, ${glowIntensity})`;
+
+                const htmlItem = item as HTMLElement;
+                const imgBox = htmlItem.querySelector('.img-box') as HTMLElement;
+
+                htmlItem.style.transform = `scale(${scale})`;
+                htmlItem.style.opacity = `${opacity}`;
+
+                if (imgBox) {
+                    imgBox.style.filter = `grayscale(${grayValue}%)`;
+
+                    if (glowIntensity > 0.05) {
+                        imgBox.style.boxShadow = `0 0 ${glowIntensity * 25}px ${glowIntensity * 4}px ${blueGlow}`;
+                        imgBox.style.borderColor = blueBorder;
+                    } else {
+                        imgBox.style.boxShadow = 'none';
+                        imgBox.style.borderColor = '';
+                    }
+                }
             });
-
-            setScales(newScales);
         };
 
         const container = scrollRef.current;
         if (container) {
-            container.addEventListener("scroll", handleScroll);
-            // Initial calculation
+            container.addEventListener("scroll", handleScroll, { passive: true });
             handleScroll();
-
-            // Recalculate on window resize
             window.addEventListener("resize", handleScroll);
         }
-
         return () => {
-            if (container) {
-                container.removeEventListener("scroll", handleScroll);
-            }
+            if (container) container.removeEventListener("scroll", handleScroll);
             window.removeEventListener("resize", handleScroll);
         };
     }, []);
 
-    // Scroll to center on mount
     useEffect(() => {
         if (scrollRef.current) {
             const container = scrollRef.current;
-            const scrollWidth = container.scrollWidth;
-            const clientWidth = container.clientWidth;
-            container.scrollLeft = (scrollWidth - clientWidth) / 2;
+            container.scrollLeft = (container.scrollWidth - container.clientWidth) / 2;
         }
     }, []);
 
     return (
-        <section className="py-16 md:py-24 overflow-hidden">
-            <div className="container mx-auto px-4 mb-10">
-                <div className="text-center">
-          <span
-              className="inline-block px-4 py-2 rounded-full bg-primary/10 border border-primary/30 text-primary text-sm font-medium mb-6">
-            Наши партнёры
-          </span>
-                    <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                        Работаем с <span className="text-gradient">лидерами отрасли</span>
-                    </h2>
-                    <p className="text-muted-foreground max-w-2xl mx-auto">
-                        Сотрудничаем с ведущими компаниями в сфере приготовления и продажи кофе
-                    </p>
-                </div>
+        <section className="py-16 md:py-24 overflow-hidden bg-background">
+            <div className="container mx-auto px-4 mb-10 text-center">
+                <span className="inline-block px-4 py-2 rounded-full bg-primary/10 border border-primary/30 text-primary text-sm font-medium mb-6 animate-in fade-in duration-700">
+                    Наши партнёры
+                </span>
+                <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                    Работаем с <span className="text-gradient">лидерами отрасли</span>
+                </h2>
             </div>
 
-            {/* Interactive scrollable partners panel */}
             <div className="relative">
-                {/* Gradient overlays */}
-                <div
-                    className="absolute left-0 top-0 bottom-0 w-24 md:w-40 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none"/>
-                <div
-                    className="absolute right-0 top-0 bottom-0 w-24 md:w-40 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none"/>
+                {/* Маски */}
+                <div className="absolute left-0 top-0 bottom-0 w-24 md:w-64 bg-gradient-to-r from-background via-background/60 to-transparent z-10 pointer-events-none"/>
+                <div className="absolute right-0 top-0 bottom-0 w-24 md:w-64 bg-gradient-to-l from-background via-background/60 to-transparent z-10 pointer-events-none"/>
 
-                {/* Scrollable container */}
                 <div
                     ref={scrollRef}
-                    className="flex gap-6 md:gap-10 overflow-x-auto hide-scrollbar px-[30%] py-8 cursor-grab active:cursor-grabbing"
-                    style={{scrollSnapType: "x mandatory"}}
+                    className="flex gap-4 md:gap-10 overflow-x-auto hide-scrollbar px-[40%] py-16 cursor-grab active:cursor-grabbing"
+                    style={{ scrollSnapType: "x mandatory" }}
                 >
                     {partners.map((partner, index) => (
                         <a
                             href={partner.link}
-                            target={partner.link.startsWith('http') ? "_blank" : "_self"}
+                            target="_blank"
                             rel="noopener noreferrer"
                             key={partner.name}
                             data-partner-item
-                            className="flex-shrink-0 flex flex-col items-center gap-4 transition-all duration-200 ease-out grayscale hover:grayscale-0"
+                            className="flex-shrink-0 flex flex-col items-center gap-4 opacity-0 animate-in fade-in fill-mode-forwards"
                             style={{
                                 scrollSnapAlign: "center",
+                                animationDelay: `${0.5 + index * 0.05}s`
                             }}
                         >
-                            <div
-                                className="w-24 h-24 md:w-32 md:h-32 rounded-2xl bg-card border border-border flex items-center justify-center group hover:border-primary/50 transition-colors">
+                            <div className="img-box w-24 h-24 md:w-32 md:h-32 rounded-2xl bg-card border border-border flex items-center justify-center p-4 overflow-hidden">
                                 <img
                                     src={partner.logo}
                                     alt={partner.name}
-                                    className="w-full h-full object-contain filter group-hover:grayscale-0 transition-all duration-300"
+                                    className="w-full h-full object-contain pointer-events-none select-none"
                                 />
                             </div>
-                            <span
-                                className="text-sm md:text-base font-medium text-muted-foreground whitespace-nowrap">
-                                    {partner.name}
-                                </span>
+                            <span className="text-[10px] md:text-xs font-semibold text-muted-foreground uppercase tracking-wider whitespace-nowrap">
+                                {partner.name}
+                            </span>
                         </a>
                     ))}
-                </div>
-            </div>
-
-            {/* Scroll hint */}
-            <div className="flex justify-center mt-4">
-                <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <svg
-                        className="w-4 h-4 animate-pulse"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                    >
-                        <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M7 16l-4-4m0 0l4-4m-4 4h18"
-                        />
-                    </svg>
-                    <span>Прокрутите для просмотра</span>
-                    <svg
-                        className="w-4 h-4 animate-pulse"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                    >
-                        <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M17 8l4 4m0 0l-4 4m4-4H3"
-                        />
-                    </svg>
                 </div>
             </div>
         </section>
