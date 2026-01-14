@@ -120,7 +120,7 @@ const PartnersSection = () => {
                             rel="noopener noreferrer"
                             key={partner.name}
                             data-partner-item
-                            className="flex-shrink-0 flex flex-col items-center gap-4 transition-all duration-200 ease-out"
+                            className="flex-shrink-0 flex flex-col items-center gap-4 transition-all duration-200 ease-out grayscale hover:grayscale-0"
                             style={{
                                 scrollSnapAlign: "center",
                             }}
