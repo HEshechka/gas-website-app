@@ -28,8 +28,8 @@ const HeroSection = () => {
 
                     <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mb-8 animate-slide-up"
                        style={{animationDelay: '0.2s'}}>
-                        Компания «Первый Газовщик» предоставляет услуги по автономному газоснабжению,
-                        газификации домов и предприятий с гарантией качества.
+                        Компания «Первый Газовщик» предоставляет услуги по автономному газоснабжению производств,
+                        предприятий и частных домов с гарантией качества.
                     </p>
 
                     <div className="flex flex-col sm:flex-row gap-4 mb-8 md:mb-12 animate-slide-up"

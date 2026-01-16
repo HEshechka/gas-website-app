@@ -38,7 +38,7 @@ const Footer = () => {
 
                             {/* Telegram */}
                             <a
-                                href="https://t.me/"
+                                href="https://t.me/i7492925"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="w-10 h-10 rounded-lg bg-secondary flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors"
