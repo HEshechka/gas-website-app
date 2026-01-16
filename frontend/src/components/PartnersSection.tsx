@@ -50,14 +50,15 @@ const PartnersSection = () => {
             const slideCenterX = rect.left + rect.width / 2;
             const distance = Math.abs(centerX - slideCenterX);
 
-            const focusWidth = 150;
-            const maxDistance = containerRect.width / 2.5;
+            const isMobile = window.innerWidth < 768;
+            const focusWidth = isMobile ? 80 : 150;
+            const maxDistance = isMobile ? containerRect.width / 2 : containerRect.width / 2.5;
 
             const offsetDistance = Math.max(0, distance - focusWidth);
             const normalized = Math.min(offsetDistance / (maxDistance - focusWidth), 1);
 
-            const glowIntensity = Math.pow(Math.max(0, 1 - normalized), 2);
-            const grayValue = Math.min(normalized * 100, 100);
+            const glowIntensity = Math.pow(Math.max(0, 1 - normalized), isMobile ? 1.5 : 2);
+            const grayValue = Math.min(normalized * (isMobile ? 80 : 100), 100); // Меньше серого на мобильных
 
             const blueGlow = `rgba(59, 130, 246, ${glowIntensity * 0.7})`;
             const blueBorder = `rgba(59, 130, 246, ${glowIntensity})`;
@@ -65,13 +66,17 @@ const PartnersSection = () => {
             const htmlSlide = slide as HTMLElement;
             const imgBox = htmlSlide.querySelector(".img-box") as HTMLElement;
 
-            htmlSlide.style.transform = `scale(${1 - normalized * 0.15})`;
-            htmlSlide.style.opacity = `${1 - normalized * 0.5}`;
+            const scale = 1 - normalized * (isMobile ? 0.1 : 0.15);
+            const opacity = 1 - normalized * (isMobile ? 0.3 : 0.5);
+
+            htmlSlide.style.transform = `scale(${scale})`;
+            htmlSlide.style.opacity = `${opacity}`;
 
             if (imgBox) {
                 imgBox.style.filter = `grayscale(${grayValue}%)`;
                 if (glowIntensity > 0.05) {
-                    imgBox.style.boxShadow = `0 0 ${glowIntensity * 35}px ${glowIntensity * 5}px ${blueGlow}`;
+                    const shadowSize = isMobile ? glowIntensity * 20 : glowIntensity * 35;
+                    imgBox.style.boxShadow = `0 0 ${shadowSize}px ${glowIntensity * 3}px ${blueGlow}`;
                     imgBox.style.borderColor = blueBorder;
                 } else {
                     imgBox.style.boxShadow = "none";
@@ -84,17 +89,26 @@ const PartnersSection = () => {
     useEffect(() => {
         if (!emblaApi) return;
 
-        emblaApi.on("scroll", updateStyles);
+        const handleScroll = () => {
+            requestAnimationFrame(updateStyles);
+        };
+
+        emblaApi.on("scroll", handleScroll);
         emblaApi.on("reInit", updateStyles);
 
         updateStyles();
 
-        const timeout = setTimeout(updateStyles, 50);
+        // Обработчик ресайза
+        const handleResize = () => {
+            updateStyles();
+        };
+
+        window.addEventListener("resize", handleResize);
 
         return () => {
-            emblaApi.off("scroll", updateStyles);
+            emblaApi.off("scroll", handleScroll);
             emblaApi.off("reInit", updateStyles);
-            clearTimeout(timeout);
+            window.removeEventListener("resize", handleResize);
         };
     }, [emblaApi, updateStyles]);
 
@@ -114,26 +128,26 @@ const PartnersSection = () => {
                 <div className="absolute right-0 top-0 bottom-0 w-32 md:w-80 bg-gradient-to-l from-background via-background/95 to-transparent z-10 pointer-events-none" />
 
                 <div className="overflow-hidden cursor-grab active:cursor-grabbing" ref={emblaRef}>
-                    <div className="flex py-20">
+                    <div className="flex py-10 md:py-20">
                         {doubledPartners.map((partner, index) => (
                             <div
                                 key={index}
-                                className="flex-[0_0_65%] sm:flex-[0_0_35%] lg:flex-[0_0_22%] px-4 min-w-0"
+                                className="text-12 flex-[0_0_35%] sm:flex-[0_0_30%] lg:flex-[0_0_22%] px-2 md:px-4 min-w-0"
                             >
                                 <a
                                     href={partner.link}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="flex flex-col items-center gap-5 no-underline"
+                                    className="flex flex-col items-center gap-4 md:gap-5 no-underline"
                                 >
-                                    <div className="img-box w-28 h-28 md:w-36 md:h-36 rounded-2xl bg-card border border-border flex items-center justify-center p-5 overflow-hidden transition-none">
+                                    <div className="img-box w-20 h-20 md:w-36 md:h-36 rounded-xl md:rounded-2xl bg-card border border-border flex items-center justify-center p-3 md:p-5 overflow-hidden transition-none"> {/* Меньше размер на мобильных */}
                                         <img
                                             src={partner.logo}
                                             alt={partner.name}
                                             className="w-full h-full object-contain pointer-events-none select-none"
                                         />
                                     </div>
-                                    <span className="text-[11px] md:text-xs font-bold text-muted-foreground uppercase tracking-[0.2em] whitespace-nowrap">
+                                    <span className="text-[10px] md:text-xs font-bold text-muted-foreground uppercase tracking-[0.15em] md:tracking-[0.2em] whitespace-nowrap overflow-hidden text-ellipsis max-w-full">
                                         {partner.name}
                                     </span>
                                 </a>
