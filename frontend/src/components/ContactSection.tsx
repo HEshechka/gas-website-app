@@ -156,7 +156,7 @@ const ContactSection = () => {
                                     </div>
                                     <div>
                                         <div className="text-sm text-muted-foreground">Режим работы</div>
-                                        <div className="font-semibold">Пн-Вс: 9:00 - 21:00</div>
+                                        <div className="font-semibold">Пн-Вс: 11:00 - 21:00</div>
                                     </div>
                                 </div>
                             </div>
