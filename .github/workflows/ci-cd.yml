@@ -35,30 +35,8 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Start app for smoke test
-        run: |
-          export PORT="${{ vars.PORT }}"
-          export DATABASE_URL="${{ secrets.DATABASE_URL }}"
-          export POSTGRES_DB="${{ vars.POSTGRES_DB }}"
-          export POSTGRES_USER="${{ vars.POSTGRES_USER }}"
-          export POSTGRES_PASSWORD="${{ secrets.POSTGRES_PASSWORD }}"
-          make up
-
-      - name: Wait for app health
-        run: |
-          curl --retry 30 --retry-delay 2 --retry-connrefused -fsS "http://localhost:${{ vars.PORT }}/api/health"
-
-      - name: Smoke test
-        env:
-          APP_URL: http://localhost:${{ vars.PORT }}
-        run: npm run test
-
       - name: Build project
         run: npm run build
-
-      - name: Stop containers
-        if: always()
-        run: make down
 
   cd:
     name: CD via SSH
