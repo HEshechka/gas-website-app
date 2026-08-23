@@ -35,8 +35,6 @@ jobs:
         run: npm install --include=dev
 
       - name: Build project
-        env:
-          NODE_ENV: development
         run: npm run build
 
   cd:
