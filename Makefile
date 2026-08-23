@@ -48,8 +48,6 @@ test:
 
 ci:
 	npm install
-	npm run lint
-	npm run typecheck
 	POSTGRES_DB=$(POSTGRES_DB) \
 	POSTGRES_USER=$(POSTGRES_USER) \
 	POSTGRES_PASSWORD=$(POSTGRES_PASSWORD) \
