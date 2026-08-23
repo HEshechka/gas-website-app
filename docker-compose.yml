@@ -1,63 +1,50 @@
-version: '3.8'
+version: "3.9"
 
 services:
-#  backend:
-#    build:
-#      context: ./backend
-#    container_name: myapp-backend
-#    restart: unless-stopped
-#    env_file:
-#      - .env
-#    environment:
-#      - DATABASE_URL=jdbc:postgresql://myapp-db:5432/${DB_NAME}
-#      - DB_USER=${DB_USER}
-#      - DB_PASSWORD=${DB_PASSWORD}
-#      - FILE_UPLOAD_DIR=/app/uploads
-#    ports:
-#      - "8080:8080"
-#    networks:
-#      - app-network
-#    depends_on:
-#      db:
-#        condition: service_healthy
-#    volumes:
-#      - ./backend/uploads:/app/uploads
-
-  frontend:
-    build:
-      context: ./frontend
-    container_name: myapp-frontend
+  db:
+    image: postgres:16-alpine
+    container_name: gas-website-db
     restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-gas_website}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in GitHub Variables or local .env}
     ports:
-      - "3000:3000"
-    networks:
-      - app-network
-#    depends_on:
-#      - backend
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-gas_website}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 15s
 
-#  db:
-#    image: postgres:14-alpine
-#    container_name: myapp-db
-#    restart: unless-stopped
-#    env_file:
-#      - .env
-#    environment:
-#      - POSTGRES_DB=${DB_NAME}
-#      - POSTGRES_USER=${DB_USER}
-#      - POSTGRES_PASSWORD=${DB_PASSWORD}
-#    volumes:
-#      - postgres_data:/var/lib/postgresql/data
-#    networks:
-#      - app-network
-#    healthcheck:
-#      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
-#      interval: 5s
-#      timeout: 5s
-#      retries: 5
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        DATABASE_URL: ${DATABASE_URL:?Set DATABASE_URL in GitHub Variables or local .env}
+        PORT: ${PORT:-3000}
+    container_name: gas-website-app
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      NODE_ENV: ${NODE_ENV:-production}
+      PORT: ${PORT:-3000}
+      DATABASE_URL: ${DATABASE_URL:?Set DATABASE_URL in GitHub Variables or local .env}
+    ports:
+      - "${PORT:-3000}:3000"
+    command: sh -c "npm run start"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q --spider http://localhost:${PORT:-3000}/api/health || exit 1"]
+      interval: 20s
+      timeout: 10s
+      retries: 10
+      start_period: 30s
 
 volumes:
   postgres_data:
-
-networks:
-  app-network:
-    driver: bridge
