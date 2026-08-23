@@ -9,12 +9,15 @@ export default function CookieConsent() {
 
   useEffect(() => {
     try {
-      if (!localStorage.getItem(KEY)) {
-        const t = setTimeout(() => setVisible(true), 1200);
-        return () => clearTimeout(t);
+      if (localStorage.getItem(KEY)) {
+        return;
       }
+
+      const t = setTimeout(() => setVisible(true), 1200);
+      return () => clearTimeout(t);
     } catch {
-      setVisible(true);
+      const t = setTimeout(() => setVisible(true), 0);
+      return () => clearTimeout(t);
     }
   }, []);
 

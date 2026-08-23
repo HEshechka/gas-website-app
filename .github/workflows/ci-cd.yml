@@ -1,0 +1,99 @@
+name: CI/CD
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  pull_request:
+    branches:
+      - main
+      - master
+
+jobs:
+  ci:
+    name: CI
+    runs-on: ubuntu-latest
+    env:
+      PORT: ${{ vars.PORT }}
+      POSTGRES_DB: ${{ vars.POSTGRES_DB }}
+      POSTGRES_USER: ${{ vars.POSTGRES_USER }}
+      POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      NODE_ENV: ${{ vars.NODE_ENV }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Start app for smoke test
+        run: |
+          export PORT="${{ vars.PORT }}"
+          export DATABASE_URL="${{ secrets.DATABASE_URL }}"
+          export POSTGRES_DB="${{ vars.POSTGRES_DB }}"
+          export POSTGRES_USER="${{ vars.POSTGRES_USER }}"
+          export POSTGRES_PASSWORD="${{ secrets.POSTGRES_PASSWORD }}"
+          make up
+
+      - name: Wait for app health
+        run: |
+          curl --retry 30 --retry-delay 2 --retry-connrefused -fsS "http://localhost:${{ vars.PORT }}/api/health"
+
+      - name: Smoke test
+        env:
+          APP_URL: http://localhost:${{ vars.PORT }}
+        run: npm run test
+
+      - name: Build project
+        run: npm run build
+
+      - name: Stop containers
+        if: always()
+        run: make down
+
+  cd:
+    name: CD via SSH
+    needs: ci
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Deploy over SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          port: ${{ vars.SSH_PORT || 22 }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            set -e
+            cd ${{ vars.DEPLOY_PATH }}
+            git pull origin ${{ github.ref_name }}
+            export PORT="${{ vars.PORT }}"
+            export NODE_ENV="${{ vars.NODE_ENV }}"
+            export POSTGRES_DB="${{ secrets.POSTGRES_DB }}"
+            export POSTGRES_USER="${{ secrets.POSTGRES_USER }}"
+            export POSTGRES_PASSWORD="${{ secrets.POSTGRES_PASSWORD }}"
+            export DATABASE_URL="${{ secrets.DATABASE_URL }}"
+            docker compose down --remove-orphans || true
+            docker compose up -d --build
+            docker compose ps
+            curl --retry 30 --retry-delay 2 --retry-connrefused -fsS "http://localhost:${{ vars.PORT }}/api/health"
