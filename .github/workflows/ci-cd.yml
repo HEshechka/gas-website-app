@@ -20,7 +20,6 @@ jobs:
       POSTGRES_USER: ${{ vars.POSTGRES_USER }}
       POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
       DATABASE_URL: ${{ secrets.DATABASE_URL }}
-      NODE_ENV: ${{ vars.NODE_ENV }}
 
     steps:
       - name: Checkout repository
@@ -33,9 +32,11 @@ jobs:
           cache: npm
 
       - name: Install dependencies
-        run: npm install
+        run: npm install --include=dev
 
       - name: Build project
+        env:
+          NODE_ENV: development
         run: npm run build
 
   cd:
@@ -61,8 +62,8 @@ jobs:
             git pull origin ${{ github.ref_name }}
             export PORT="${{ vars.PORT }}"
             export NODE_ENV="${{ vars.NODE_ENV }}"
-            export POSTGRES_DB="${{ secrets.POSTGRES_DB }}"
-            export POSTGRES_USER="${{ secrets.POSTGRES_USER }}"
+            export POSTGRES_DB="${{ vars.POSTGRES_DB }}"
+            export POSTGRES_USER="${{ vars.POSTGRES_USER }}"
             export POSTGRES_PASSWORD="${{ secrets.POSTGRES_PASSWORD }}"
             export DATABASE_URL="${{ secrets.DATABASE_URL }}"
             docker compose down --remove-orphans || true
