@@ -10,7 +10,7 @@ import Stats from "@/components/Stats";
 
 export default function Home() {
   return (
-    <div className="noise relative min-h-screen bg-background">
+    <div className="relative min-h-screen bg-background">
       <Header />
       <main>
         <Hero />

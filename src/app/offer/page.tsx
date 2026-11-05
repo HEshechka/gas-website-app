@@ -12,7 +12,6 @@ export default function OfferPage() {
   return (
     <div className="relative min-h-screen bg-background pt-28 pb-20">
       <div className="absolute inset-x-0 top-0 h-96 bg-[radial-gradient(ellipse_at_top,hsl(185_75%_45%/0.1),transparent_65%)]" />
-      <div className="bg-grid absolute inset-x-0 top-0 h-96" />
 
       <div className="relative mx-auto max-w-4xl px-4 sm:px-6">
         <Link href="/" className="text-sm font-semibold text-flame hover:text-flame-2">

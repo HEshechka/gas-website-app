@@ -7,7 +7,6 @@ export default function Stats() {
       {/* глубина: градиентные слои */}
       <div className="absolute inset-0 bg-gradient-to-r from-flame/10 via-flame-2/5 to-flame/10" />
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,hsl(185_75%_45%/0.12),transparent_68%)]" />
-      <div className="bg-grid absolute inset-x-0 top-0 h-full opacity-60" />
       <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-flame/50 to-transparent" />
       <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-flame/40 to-transparent" />
 

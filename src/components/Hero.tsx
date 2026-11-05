@@ -76,7 +76,6 @@ export default function Hero() {
       <div className="absolute inset-0 bg-gradient-to-t from-background via-background/25 to-background/40" />
       {/* Световой ореол */}
       <div className="absolute -right-40 top-1/4 h-[560px] w-[560px] rounded-full bg-flame/14 blur-[140px] animate-pulse-glow" />
-      <div className="bg-grid absolute inset-x-0 top-0 h-[60%]" />
 
       {/* Контент */}
       <div className="relative z-10 mx-auto w-full max-w-7xl px-4 sm:px-6">

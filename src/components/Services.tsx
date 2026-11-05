@@ -16,7 +16,6 @@ export default function Services() {
       <div className="absolute inset-0 bg-surface/45" />
       <div className="absolute right-0 top-0 h-2/3 w-1/3 rounded-full bg-flame/5 blur-3xl" />
       <div className="absolute bottom-0 left-0 h-2/3 w-1/3 rounded-full bg-flame/5 blur-3xl" />
-      <div className="bg-grid absolute inset-x-0 bottom-0 h-[50%] rotate-180" />
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6">
         <Reveal className="mx-auto mb-14 max-w-3xl text-center md:mb-18">
